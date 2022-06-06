@@ -1,0 +1,53 @@
+<div class="container-fluid w-100">
+    <div class="row">
+      <div class="col-8 mx-auto">
+        <h3 class="bg-primary text-white p-3">{{ getName() }}'s list</h3>
+        <div class="input-group mb-3">
+          <input #input type="text" class="form-control" (keyup.enter)="addItem(input.value)" input.value=""/>
+          <!-- (blur)="addItem(input.value)" -->
+          <button class="btn btn-outline-primary" (click)="addItem(input.value); input.value = ''">Add</button>
+        </div>
+        <h1>{{ displayAll }}</h1>
+        <div class="form-check mb-3">
+          <input type="checkbox" [(ngModel)]="displayAll" class="form-check-input" id="displayAll" />
+          <label for="displayAll" class="form-check-label">Show All</label>
+        </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody #tbody>
+            <tr (click)="ChangeColor(tbody, tr)" (blur)="ChangeColorBlur(tbody)" #tr *ngFor="let item of getItems(); let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.description }}</td>
+              <td *ngIf="item.action">Yes <input type="checkbox" checked="checked" class="ms-3" (click)="changeAction(item)"/></td>
+              <td *ngIf="!item.action">No <input type="checkbox" class="ms-3" (click)="changeAction(item)"/></td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <!-- <ul>
+              <li *ngFor="let item of items" >
+                  {{item}}
+              </li>
+          </ul> -->
+      </div>
+      <div *ngIf="selectedTodo" class="col-4 mx-auto border border-dark p-1 ps-3 pe-3">
+        <label class="w-100 mt-1" style="font-size: 1.5vw;">Id: {{selectedTodo.id}}</label>
+
+        <label for="desc" class="w-100 pb-1 mt-3" style="font-size: 1.5vw;">Description</label>
+        <input type="text" name="desc" id="desc" class="w-100 p-1 text-success" [(ngModel)]="selectedTodo.description">
+        
+        <label class="w-100 pb-1 mt-4" style="font-size: 1.5vw;">Action: 
+          <label *ngIf="selectedTodo.action" for="act">Yes <input type="checkbox" name="act" id="act" #act checked class="ms-2" (click)="changeAction(selectedTodo)"></label>
+          <label *ngIf="!selectedTodo.action" for="act">No <input type="checkbox" name="act" id="act" #act class="ms-2" (click)="changeAction(selectedTodo)"></label>
+        </label>
+
+        <button type="submit" class="w-25 p-2 pe-2 border-0 d-block mx-auto mt-3 rounded-pill bg-success text-light" (click)="Update()">Update</button>
+      </div>
+    </div>
+  </div>  
